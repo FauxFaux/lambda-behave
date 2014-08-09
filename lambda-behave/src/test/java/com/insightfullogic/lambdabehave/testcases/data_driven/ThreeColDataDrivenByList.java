@@ -1,7 +1,5 @@
 package com.insightfullogic.lambdabehave.testcases.data_driven;
 
-import com.insightfullogic.lambdabehave.specifications.ThreeColumnDataSpecification;
-
 import static com.insightfullogic.lambdabehave.Suite.describe;
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;

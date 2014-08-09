@@ -1,13 +1,11 @@
 package com.insightfullogic.lambdabehave.impl.specifications;
 
 import com.insightfullogic.lambdabehave.impl.Specifier;
-import com.insightfullogic.lambdabehave.specifications.ColumnDataSpecification;
 import org.mockito.cglib.proxy.Enhancer;
 import org.mockito.cglib.proxy.MethodInterceptor;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,7 +23,7 @@ public class TitledTable<T, F, S> {
         this.clazz = clazz;
     }
 
-    public TitledTable<T, F, S> toShow(String description, ColumnDataSpecification<T> specification) {
+    public TitledTable<T, F, S> toShow(String description, ColumnDataSpecification1<T> specification) {
         final Iterator<F> fit = firsts.iterator();
         final Iterator<S> sit = seconds.iterator();
         while (fit.hasNext()) {
@@ -34,7 +32,7 @@ public class TitledTable<T, F, S> {
             final String describe = String.format(description,
                     values[0], values[1],
                     methods.get(0).getName(), methods.get(1).getName());
-            specifier.specifyBehaviour(describe, mock, specification);
+            specifier.specifyBehaviour(describe, specification, mock);
         }
         return this;
     }

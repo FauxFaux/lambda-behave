@@ -1,20 +1,18 @@
-package com.insightfullogic.lambdabehave.specifications;
+package com.insightfullogic.lambdabehave.impl.specifications.gen;
 
 import com.insightfullogic.lambdabehave.expectations.Expect;
 
 /**
  * Implement this interface to specify a behaviour that requires
- * a single data value.
+ * some data values.
  */
 @FunctionalInterface
-public interface ColumnDataSpecification<T> {
+public interface RenameColumnDataSpecification<F1> {
 
     /**
      * Callback method which specifies the actual behaviour.
      *
      * @param expect the callback object used to describe expectations
-     * @param value the parameter value
      */
-    public void specifyBehaviour(Expect expect, T value);
-
+    public void specifyBehaviour(Expect expect, F1 f1);
 }

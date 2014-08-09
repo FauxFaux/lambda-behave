@@ -1,7 +1,5 @@
 package com.insightfullogic.lambdabehave.testcases.data_driven;
 
-import com.insightfullogic.lambdabehave.specifications.ThreeColumnDataSpecification;
-
 import java.util.stream.Stream;
 
 import static com.insightfullogic.lambdabehave.Suite.describe;

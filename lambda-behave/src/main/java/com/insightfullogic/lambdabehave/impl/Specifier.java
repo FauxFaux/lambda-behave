@@ -7,10 +7,11 @@ import com.insightfullogic.lambdabehave.generators.GeneratedDescription;
 import com.insightfullogic.lambdabehave.generators.SourceGenerator;
 import com.insightfullogic.lambdabehave.impl.generators.GeneratedDescriptionBuilder;
 import com.insightfullogic.lambdabehave.impl.reports.Report;
-import com.insightfullogic.lambdabehave.impl.specifications.PairBuilder;
 import com.insightfullogic.lambdabehave.impl.specifications.TitledTable;
-import com.insightfullogic.lambdabehave.impl.specifications.TripletBuilder;
-import com.insightfullogic.lambdabehave.impl.specifications.ValueBuilder;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.LotsOfParams;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.RenameBuilder;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.RenameColumnDataSpecification;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.RenameColumns;
 import com.insightfullogic.lambdabehave.specifications.*;
 import org.mockito.Mockito;
 import org.mockito.cglib.proxy.Enhancer;
@@ -51,16 +52,10 @@ public class Specifier implements Description {
         completers = new Blocks();
     }
 
-    public <T> void specifyBehaviour(String description, T value, ColumnDataSpecification<T> specification) {
-        should(description, expect -> specification.specifyBehaviour(expect, value));
-    }
-
-    public <F, S> void specifyBehaviour(String description, F first, S second, TwoColumnDataSpecification<F, S> specification) {
-        should(description, expect -> specification.specifyBehaviour(expect, first, second));
-    }
-
-    public <F, S, T> void specifyBehaviour(String description, F first, S second, T third, ThreeColumnDataSpecification<F, S, T> specification) {
-        should(description, expect -> specification.specifyBehaviour(expect, first, second, third));
+    @LotsOfParams
+    public <F1> Specifier specifyBehaviour(String description, RenameColumnDataSpecification<F1> specification, F1 f1) {
+        should(description, expect -> specification.specifyBehaviour(expect, f1));
+        return this;
     }
 
     @Override
@@ -81,19 +76,19 @@ public class Specifier implements Description {
     }
 
     @Override
-    public <T> Column<T> uses(T value) {
-        return new ValueBuilder<>(value, this);
+    public <T> RenameColumns<T> uses(T value) {
+        return new RenameBuilder<T>(this, value);
     }
 
     @Override
-    public <T> Column<T> uses(List<T> values) {
+    public <T> RenameColumns<T> uses(List<T> values) {
         // Additional arraylist required to ensure
         // we can with more values
-        return new ValueBuilder<>(new ArrayList<>(values), this);
+        return new RenameBuilder<T>(this, new ArrayList<>(values));
     }
 
     @Override
-    public <T> Column<T> uses(Stream<T> values) {
+    public <T> RenameColumns<T> uses(Stream<T> values) {
         return uses(values.collect(toList()));
     }
 
@@ -106,42 +101,6 @@ public class Specifier implements Description {
         first.apply(mock);
         second.apply(mock);
         return new TitledTable<>(m, this, clazz);
-    }
-
-    @Override
-    public <F, S> TwoColumns<F, S> uses(F first, S second) {
-        return new PairBuilder<>(first, second, this);
-    }
-
-    @Override
-    public <F, S> TwoColumns<F, S> uses(List<F> first, List<S> second) {
-        return new PairBuilder<F, S>(new ArrayList<>(first), new ArrayList<>(second), this);
-    }
-
-    @Override
-    public <F, S> TwoColumns<F, S> uses(Stream<F> first, Stream<S> second) {
-        return new PairBuilder<F, S>(first.collect(toList()), second.collect(toList()), this);
-    }
-
-    @Override
-    public <F, S, T> ThreeColumns<F, S, T> uses(F first, S second, T third) {
-        return new TripletBuilder<>(first, second, third, this);
-    }
-
-    @Override
-    public <F, S, T> ThreeColumns<F, S, T> uses(List<F> first, List<S> second, List<T> third) {
-        return new TripletBuilder<F, S, T>(new ArrayList<>(first),
-                                           new ArrayList<>(second),
-                                           new ArrayList<>(third),
-                                           this);
-    }
-
-    @Override
-    public <F, S, T> ThreeColumns<F, S, T> uses(Stream<F> first, Stream<S> second, Stream<T> third) {
-        return new TripletBuilder<F, S, T>(first.collect(toList()),
-                                           second.collect(toList()),
-                                           third.collect(toList()),
-                                           this);
     }
 
     @Override

@@ -4,12 +4,8 @@ import com.insightfullogic.lambdabehave.generators.GeneratedDescription;
 import com.insightfullogic.lambdabehave.generators.Generator;
 import com.insightfullogic.lambdabehave.generators.SourceGenerator;
 import com.insightfullogic.lambdabehave.impl.Specifier;
-import com.insightfullogic.lambdabehave.impl.specifications.PairBuilder;
-import com.insightfullogic.lambdabehave.impl.specifications.TripletBuilder;
-import com.insightfullogic.lambdabehave.impl.specifications.ValueBuilder;
-import com.insightfullogic.lambdabehave.specifications.Column;
-import com.insightfullogic.lambdabehave.specifications.ThreeColumns;
-import com.insightfullogic.lambdabehave.specifications.TwoColumns;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.RenameBuilder;
+import com.insightfullogic.lambdabehave.impl.specifications.gen.RenameColumns;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -36,33 +32,12 @@ public class GeneratedDescriptionBuilder implements GeneratedDescription {
     }
 
     @Override
-    public <T> Column<T> example(final Generator<T> generator) {
-        return new ValueBuilder<T>(generateValues(generator), specifier);
-    }
+    public <F1> RenameColumns<F1> example(
+            Generator<F1> firstGenerator) {
 
-    @Override
-    public <F, S> TwoColumns<F, S> example(
-            Generator<F> firstGenerator,
-            Generator<S> secondGenerator) {
-
-        return new PairBuilder<F, S>(
-                generateValues(firstGenerator),
-                generateValues(secondGenerator),
-                specifier);
-    }
-
-    @Override
-    public <F, S, T> ThreeColumns<F, S, T> example(
-            Generator<F> firstGenerator,
-            Generator<S> secondGenerator,
-            Generator<T> thirdGenerator) {
-
-        return new TripletBuilder<F, S, T>(
-                generateValues(firstGenerator),
-                generateValues(secondGenerator),
-                generateValues(thirdGenerator),
-                specifier
-        );
+        return new RenameBuilder<F1>(specifier,
+                generateValues(firstGenerator)
+                );
     }
 
     private <T> List<T> generateValues(Generator<T> generator) {
